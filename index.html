@@ -155,7 +155,7 @@ h3{text-align:center;text-decoration:underline;margin:0 0 12mm;font-size:11pt}
 <script>
 const $=id=>document.getElementById(id);
 const SAMPLE='';
-const TPL=`This is to certify that {{Name}}, Employee ID: {{Staff Id No}}, serving as {{Designation:art}} in the {{Department}} department at WeGro Technologies Limited from {{Date of Joining:mdy}}. {{He}} is a Permanent employee of this company and drawing {{his}} salary as per the following breakup:
+const TPL=`This is to certify that {{Name}}, Employee ID: {{Staff Id No}}, serving as {{Designation:art}} in the {{Department}} department at WeGro Technologies Limited from {{Date of Joining:mdy}} {{Period End}}. {{He}} is {{Employement Status:art}} employee of this company and drawing {{his}} salary as per the following breakup:
 
 |= Salary Details | Amount |
 | Basic | {{Basic:money}} |
@@ -262,21 +262,21 @@ let PR={};const art=v=>{const w=(String(v).match(/^[A-Za-z]+/)||[''])[0];const a
 const SHEET_EXPORT='https://docs.google.com/spreadsheets/d/1B_Dyh8NdpALA1er9qcsmn_pp2aG-c6tLk2WikIdn_3s/export?format=csv&gid=1169921246';
 const SHEET='https://docs.google.com/spreadsheets/d/1B_Dyh8NdpALA1er9qcsmn_pp2aG-c6tLk2WikIdn_3s/gviz/tq?tqx=out:csv&gid=1169921246';
 const SHEETJ=SHEET.replace('out:csv','out:json&headers=1');let lastOK=0,busy=false;
-const WANT=['Staff Id No','Name','Date of Joining','Designation','Department','Salary 2026','Basic','House Rent','Conveyance Allowance','Medical Allowance','Gender','Employee Status','Last Working Day'];
-const ALIAS={'Staff Id No':'New Staff Code','Name':'Employee Name','Date of Joining':'Joining Date','Salary 2026':'Update Salary 2026','Employee Status':'Emplyee Status'};
+const WANT=['Staff Id No','Name','Date of Joining','Designation','Department','Salary 2026','Basic','House Rent','Conveyance Allowance','Medical Allowance','Gender','Employee Status','Employement Status','Last Working Day'];
+const ALIAS={'Staff Id No':'New Staff Code','Name':'Employee Name','Date of Joining':'Joining Date','Salary 2026':'Update Salary 2026','Employee Status':'Emplyee Status','Employement Status':['Employment Status','@BC'],'Last Working Day':'Last Wroking Day'};
 const ACT=r=>/^active$/i.test(String(r['Employee Status']||'').trim());
 let _ids='';
 function fillIds(){const el=$('eid'),cur=el.value,act=DATA.filter(ACT),sig=act.map(r=>r[KEY]+'|'+r['Name']).join('~');if(sig===_ids&&el.options.length>1)return;_ids=sig;el.innerHTML='<option value="">-- Employee select korun --</option>'+act.map(r=>'<option value="'+esc(r[KEY])+'">'+esc(r[KEY])+' \u2014 '+esc(r['Name']||'')+'</option>').join('');el.value=cur;if(el.value!==cur)el.value=''}
 
 const nz=s=>String(s).replace(/[\s\u00a0\u200b\ufeff]+/g,' ').trim().toLowerCase();
 const slim=rows=>{if(!rows.length)return[];const ks=Object.keys(rows[0]),map={};
-WANT.forEach(w=>{const k=ks.find(x=>nz(x)==nz(w))||(ALIAS[w]?ks.find(x=>nz(x)==nz(ALIAS[w])):null)||(w=='Salary 2026'?ks.find(x=>/^(gross )?salary( \d{4})?$/.test(nz(x))):null);if(k!=null)map[w]=k});
+WANT.forEach(w=>{const k=ks.find(x=>nz(x)==nz(w))||([].concat(ALIAS[w]||[]).map(a=>ks.find(x=>nz(x)==nz(a))).find(Boolean)||null)||(w=='Salary 2026'?ks.find(x=>/^(gross )?salary( \d{4})?$/.test(nz(x))):null);if(k!=null)map[w]=k});
 return rows.map(r=>Object.fromEntries(Object.entries(map).map(([w,k])=>[w,r[k]]))).filter(r=>(r['Staff Id No']||'').trim())};
 const tm=t=>new Date(t).toLocaleString('en-GB',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit',second:'2-digit'});
 function setSt(ok,txt){const e=$('st');e.textContent=txt;e.style.color=ok===null?'#666':ok?'#1e8449':'#c0392b'}
 function viaJsonp(){return new Promise((ok,no)=>{window.google=window.google||{};google.visualization=google.visualization||{};google.visualization.Query=google.visualization.Query||{};
 const sc=document.createElement('script'),to=setTimeout(()=>{sc.remove();no(new Error('jsonp-timeout(15s)'))},15000);
-google.visualization.Query.setResponse=r=>{clearTimeout(to);sc.remove();if(r.status!='ok')return no(new Error('jsonp-status:'+r.status+(r.errors?' '+JSON.stringify(r.errors):'')));if(!r.table||!r.table.cols)return no(new Error('jsonp-empty-table'));const c=r.table.cols.map(x=>x.label);ok(r.table.rows.map(rw=>Object.fromEntries(c.map((l,i)=>{const x=rw.c[i];return[l,x?String(x.f!=null?x.f:x.v!=null?x.v:''):'']}))))};
+google.visualization.Query.setResponse=r=>{clearTimeout(to);sc.remove();if(r.status!='ok')return no(new Error('jsonp-status:'+r.status+(r.errors?' '+JSON.stringify(r.errors):'')));if(!r.table||!r.table.cols)return no(new Error('jsonp-empty-table'));const c=r.table.cols.map(x=>x.label),cid=r.table.cols.map(x=>x.id);ok(r.table.rows.map(rw=>Object.fromEntries(c.flatMap((l,i)=>{const x=rw.c[i],v=x?String(x.f!=null?x.f:x.v!=null?x.v:''):'';return[[l,v],['@'+cid[i],v]]}))))};
 sc.onerror=()=>{clearTimeout(to);no(new Error('jsonp-script-load-failed (blocked/offline/sheet-not-shared)'))};sc.src=SHEETJ+'&_='+Date.now();document.head.appendChild(sc)})}
 async function viaUrl(u){let r;try{r=await fetch(u+(u.includes('?')?'&':'?')+'_='+Date.now(),{cache:'no-store'})}catch(e){throw new Error('fetch-blocked: '+(e&&e.message||e))}if(!r.ok)throw new Error('http-'+r.status);const t=await r.text();if(/^\s*<(!DOCTYPE|html)/i.test(t))throw new Error('got-html(sheet not public / login page, not data)');return parse(t)}
 async function viaCsv(){try{return await viaUrl(SHEET_EXPORT)}catch(e1){try{return await viaUrl(SHEET)}catch(e2){throw new Error('export:'+e1.message+' | gviz-csv:'+e2.message)}}}
@@ -290,11 +290,12 @@ busy=false;$('sync').disabled=false;$('sync').textContent='Sync Data'}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const save=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 const get=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
+const colL=i=>{let s='';for(i++;i>0;i=Math.floor((i-1)/26))s=String.fromCharCode(65+(i-1)%26)+s;return s};
 function parse(t){t=t.replace(/^\uFEFF/,'').trim();const d=t.split('\n')[0].includes('\t')?'\t':',';const rows=[];let r=[],c='',q=false;
 for(let i=0;i<t.length;i++){const ch=t[i];if(q){if(ch=='"'&&t[i+1]=='"'){c+='"';i++}else if(ch=='"')q=false;else c+=ch}
 else if(ch=='"')q=true;else if(ch==d){r.push(c);c=''}else if(ch=='\n'||ch=='\r'){if(ch=='\r'&&t[i+1]=='\n')i++;r.push(c);rows.push(r);r=[];c=''}else c+=ch}
 r.push(c);rows.push(r);const h=rows[0].map(x=>x.trim());
-return rows.slice(1).filter(x=>x.some(v=>v.trim())).map(x=>Object.fromEntries(h.map((k,i)=>[k,(x[i]||'').trim()])))}
+return rows.slice(1).filter(x=>x.some(v=>v.trim())).map(x=>Object.fromEntries(h.flatMap((k,i)=>{const v=(x[i]||'').trim();return[[k,v],['@'+colL(i),v]]})))}
 function words(n){n=Math.round(n);if(!n)return'Zero';const a=['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'],b=['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
 const two=x=>x<20?a[x]:b[x/10|0]+(x%10?' '+a[x%10]:'');const three=x=>(x>99?a[x/100|0]+' Hundred'+(x%100?' ':''):'')+(x%100?two(x%100):'');
 const r=[];for(const[d,l]of[[1e7,'Crore'],[1e5,'Lakh'],[1e3,'Thousand']]){if(n>=d){r.push(words(Math.floor(n/d))+' '+l);n%=d}}if(n)r.push(three(n));return r.join(' ')}
@@ -306,6 +307,7 @@ if(persist)save('wgf5_data',JSON.stringify(rows));draw()}
 function fill(s,miss){return s.replace(/\{\{\s*([^}:]+?)\s*(?::(\w+))?\s*\}\}/g,(m,k,f)=>{let v;if(PR.hasOwnProperty(k))return PR[k];const kk=k.toLowerCase();
 if(kk=='today')v=today();else if(kk=='year')v=new Date().getFullYear();
 else{const key=Object.keys(emp).find(h=>nz(h)==nz(k));if(key===undefined){miss.add(k);return'['+esc(k)+'?]'}v=emp[key]}
+if(kk=='employement status'&&!String(v).trim()){miss.add(k+' (khali)');return'an'}
 if(!String(v).trim()&&(!f||f=='art'||f=='date'||f=='mdy'))miss.add(k+' (khali)');if(f=='art')v=art(v)+' '+v;else if(f=='date')v=fmtDate(v);else if(f=='mdy'){const o=dObj(v);v=o?MON[o.getMonth()]+' '+o.getDate()+', '+o.getFullYear():v}else if(f){const n=parseFloat(String(v).replace(/[^\d.]/g,''));if(!n)miss.add(k+' (khali/0)');else{if(f=='money')v=n.toLocaleString('en-IN');if(f=='words')v=words(n)}}
 return esc(v)})}
 function draw(){$('page').classList.toggle('nolh',!$('lh').checked);$('page2').classList.toggle('nolh',!$('lh').checked);
@@ -417,7 +419,7 @@ $('out2').innerHTML=`${p2}
 return}
 const body=toHTML(fill(esc($(LT.tk(act)).value),miss));
 
-if(miss.size)$('warn').textContent='Data-te nai ba khali: '+[...miss].join(', ');const ld=lk&&dObj(emp[lk]);if(LT.exp&&ld&&ld>new Date())$('warn').textContent+=(miss.size?' | ':'')+'⚠ Last Working Day ('+fmtDate(emp[lk])+') ekhono ashe ni.';
+miss.delete('Effective Date');miss.delete('Last Working Day');if(miss.size)$('warn').textContent='Data-te nai ba khali: '+[...miss].join(', ');const ld=lk&&dObj(emp[lk]);if(LT.exp&&ld&&ld>new Date())$('warn').textContent+=(miss.size?' | ':'')+'⚠ Last Working Day ('+fmtDate(emp[lk])+') ekhono ashe ni.';
 const nameV=emp[Object.keys(emp).find(k=>/^name$/i.test(k))||KEY];
 const info=LT.rel?`<div class="rl-info">
 <div><span>Name</span><span>: <b>${esc(nameV)}</b></span></div>
