@@ -286,8 +286,16 @@ google.visualization.Query.setResponse=r=>{clearTimeout(to);sc.remove();if(r.sta
 sc.onerror=()=>{clearTimeout(to);no(new Error('jsonp-script-load-failed (blocked/offline/sheet-not-shared)'))};sc.src=SHEETJ+'&_='+Date.now();document.head.appendChild(sc)})}
 async function viaUrl(u){let r;try{r=await fetch(u+(u.includes('?')?'&':'?')+'_='+Date.now(),{cache:'no-store'})}catch(e){throw new Error('fetch-blocked: '+(e&&e.message||e))}if(!r.ok)throw new Error('http-'+r.status);const t=await r.text();if(/^\s*<(!DOCTYPE|html)/i.test(t))throw new Error('got-html(sheet not public / login page, not data)');return parse(t)}
 async function viaCsv(){try{return await viaUrl(SHEET_EXPORT)}catch(e1){try{return await viaUrl(SHEET)}catch(e2){throw new Error('export:'+e1.message+' | gviz-csv:'+e2.message)}}}
+let RAW={},RAW_T=0,RAW_BAD=0;
+const RAWF=['Personal Phone','Salary 2026','Basic','House Rent','Conveyance Allowance','Medical Allowance','TA/DA','Mobile Bill','Permanent Address','Covered Area','Date of Joining'];
+async function rawFill(rows){if(!rows.some(r=>RAWF.some(f=>!String(r[f]||'').trim())))return rows;
+const now=Date.now();if(now-RAW_T>60000&&now-RAW_BAD>600000){RAW_T=now;try{const raw=slim(await viaUrl(SHEET_EXPORT)),mp={};raw.forEach(r=>{mp[String(r['Staff Id No']).trim()]=r});RAW=mp;RAW_BAD=0}catch(e){RAW_BAD=now}}
+return rows.map(r=>{const x=RAW[String(r['Staff Id No']).trim()];if(!x)return r;const o=Object.assign({},r);RAWF.forEach(f=>{if(!String(o[f]||'').trim()&&String(x[f]||'').trim())o[f]=x[f]});return o})}
+const APPS_URL='';
+async function viaScript(){const r=await fetch(APPS_URL);const v=await r.json();if(!Array.isArray(v)||v.length<2)throw new Error('script:no-data');const h=v[0].map(x=>String(x).trim());return v.slice(1).filter(x=>x.some(c=>String(c).trim())).map(x=>Object.fromEntries(h.flatMap((k,i)=>{const c=String(x[i]==null?'':x[i]).trim();return[[k,c],['@'+colL(i),c]]})))}
+async function getRows(){if(APPS_URL){try{return slim(await viaScript())}catch(e){}}return await rawFill(slim(await viaJsonp()))}
 async function sync(manual){if(busy){if(manual)setSt(null,'Sync cholche, ekto opekkha korun...');return}busy=true;if(manual){$('sync').disabled=true;$('sync').textContent='⏳ Sync hocche...'}
-let e1=null,e2=null;try{let rows;try{rows=slim(await viaJsonp())}catch(e){e1=e;rows=[]}if(!rows.length){try{rows=slim(await viaCsv())}catch(e){e2=e}}if(!rows||!rows.length)throw new Error((e1?e1.message:'jsonp:no-rows')+' | '+(e2?e2.message:'csv:no-rows'));
+let e1=null,e2=null;try{let rows;try{rows=await getRows()}catch(e){e1=e;rows=[]}if(!rows.length){try{rows=slim(await viaCsv())}catch(e){e2=e}}if(!rows||!rows.length)throw new Error((e1?e1.message:'jsonp:no-rows')+' | '+(e2?e2.message:'csv:no-rows'));
 lastOK=Date.now();save('wgf4_sync',lastOK);
 if(DATA.length&&rows.length<DATA.length*0.5){setSt(false,'⚠ Notun sync-e onek kom data elo ('+rows.length+'/'+DATA.length+'), tai age-r data-i rakha holo. Abar try korun.')}
 else{const ch=JSON.stringify(rows)!==JSON.stringify(DATA);if(ch)setData(rows,true);const mc=WANT.filter(w=>!(w in rows[0]));setSt(!mc.length,(mc.length?'⚠ Ei column paoa jayni: '+mc.join(', ')+'. Data ('+rows.length+' staff), synced ':'✓ Data synced ('+rows.length+' staff, '+rows.filter(ACT).length+' active) at ')+tm(lastOK)+(manual?(ch?' | notun/update data ashche':' | kono change nai, data up to date'):''))}}
@@ -451,6 +459,7 @@ const BNMON=['জানুয়ারি','ফেব্রুয়ারি','
 const bnD=s=>String(s).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d]);
 const BN_DESIG={'field officer':'ফিল্ড অফিসার','senior field officer':'সিনিয়র ফিল্ড অফিসার'};
 const bnDesig=e=>BN_DESIG[String(e['Designation']||'').toLowerCase().replace(/\s+/g,' ').trim()]||'';
+const bnNum=v=>parseFloat(String(v||'').replace(/[^\d.]/g,''))||0;
 const bnMoney=v=>{const n=parseFloat(String(v||'').replace(/[^\d.]/g,''));return n>0?bnD(n.toLocaleString('en-IN')):''};
 const bnPhone=v=>{let d=String(v||'').replace(/\D/g,'');if(d.indexOf('880')==0)d=d.slice(2);if(d.length==10&&d[0]=='1')d='0'+d;return d.length==11?bnD(d.slice(0,5)+'-'+d.slice(5)):bnD(String(v||'').trim())};
 const bnFmt=(o,m)=>{const dd=o.getDate(),mm=o.getMonth(),yy=o.getFullYear();return m=='num'?bnD(String(dd).padStart(2,'0')+'-'+String(mm+1).padStart(2,'0')+'-'+yy):bnD(dd)+' '+BNMON[mm]+' '+bnD(yy)};
@@ -495,6 +504,7 @@ const jd=e['Date of Joining'],phone=bnPhone(e['Personal Phone']);
 const gross=bnMoney(e['Salary 2026']),basic=bnMoney(e['Basic']),hr=bnMoney(e['House Rent']),cv=bnMoney(e['Conveyance Allowance']),md=bnMoney(e['Medical Allowance']);
 const tada=bnMoney(e['TA/DA']),mob=bnMoney(e['Mobile Bill']);
 [['Name',nmE],['Permanent Address',adE],['Personal Phone',String(e['Personal Phone']||'').trim()],['Joining Date',jd],['Covered Area',wkE],['Update Salary 2026',gross],['Basic',basic],['House Rent',hr],['Conveyance Allowance',cv],['Medical Allowance',md]].forEach(([l,v])=>{if(!v)warn.push(l)});
+if(!tada&&!mob)warn.push('TA/DA ar Mobile Bill (point 5 letter-e bad gelo)');
 const P={TODAY:bnFmt(new Date(),'num'),NAME:esc(nm)||dots,ADDR:esc(ad)||dots,PHONE:phone||dots,JOIN_NUM:bnDate(jd,'num')||dots,JOIN_TXT:bnDate(jd,'txt')||dots,DESIG:des,WORK:esc(wk)||dots,GROSS:gross||dots,BASIC:basic||dots,HRENT:hr||dots,CONV:cv||dots,MED:md||dots};
 const sub=h=>h.replace(/\{\{(\w+)\}\}/g,(m,k)=>P[k]!=null?P[k]:m);
 let n=0;const items=[];
@@ -505,7 +515,7 @@ if(b.id=='tada'){if(!tada&&!mob)continue;
 if(tada&&mob)h=b.h;
 else if(tada)h='আপনাকে টিএ/ডিএ বাবদ {{TADA}} টাকা মাসিক ভিত্তিতে প্রদান করা হবে। তবে শর্ত থাকিবে যে টিএ/ডিএ বাবদ {{TADA}} টাকা পাওয়ার জন্য আপনার নিজস্ব মোটর সাইকেল থাকতে হবে।';
 else h='আপনাকে মোবাইল বিল বাবদ {{MOB}} টাকা মাসিক ভিত্তিতে প্রদান করা হবে।';
-h=h.replace(/\{\{TADA\}\}/g,tada).replace(/\{\{MOB\}\}/g,mob)}
+let kk=0;h=h.replace(/\{\{TADA\}\}/g,()=>(tada&&mob&&kk++==1)?bnMoney(bnNum(e['TA/DA'])+bnNum(e['Mobile Bill'])):tada).replace(/\{\{MOB\}\}/g,mob)}
 h=sub(h);
 if(b.k=='li'){n++;items.push('<div class="li"><span class="n">'+n+'.</span>'+h+'</div>')}
 else items.push('<div'+(b.s?' style="'+b.s+'"':'')+'>'+h+'</div>')}
