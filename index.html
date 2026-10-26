@@ -515,7 +515,7 @@ if(b.id=='tada'){if(!tada&&!mob)continue;
 if(tada&&mob)h=b.h;
 else if(tada)h='আপনাকে টিএ/ডিএ বাবদ {{TADA}} টাকা মাসিক ভিত্তিতে প্রদান করা হবে। তবে শর্ত থাকিবে যে টিএ/ডিএ বাবদ {{TADA}} টাকা পাওয়ার জন্য আপনার নিজস্ব মোটর সাইকেল থাকতে হবে।';
 else h='আপনাকে মোবাইল বিল বাবদ {{MOB}} টাকা মাসিক ভিত্তিতে প্রদান করা হবে।';
-let kk=0;h=h.replace(/\{\{TADA\}\}/g,()=>(tada&&mob&&kk++==1)?bnMoney(bnNum(e['TA/DA'])+bnNum(e['Mobile Bill'])):tada).replace(/\{\{MOB\}\}/g,mob)}
+h=h.replace(/\{\{TADA\}\}/g,tada).replace(/\{\{MOB\}\}/g,mob)}
 h=sub(h);
 if(b.k=='li'){n++;items.push('<div class="li"><span class="n">'+n+'.</span>'+h+'</div>')}
 else items.push('<div'+(b.s?' style="'+b.s+'"':'')+'>'+h+'</div>')}
