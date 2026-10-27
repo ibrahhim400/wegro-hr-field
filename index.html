@@ -80,7 +80,7 @@ h3{text-align:center;text-decoration:underline;margin:0 0 12mm;font-size:11pt}
 .body.bn{top:23mm;left:12.7mm;right:12.7mm;font:10pt/1.575 BNK,Kalpurush,'Noto Sans Bengali','Nirmala UI',sans-serif;text-align:justify}
 .bn .li{position:relative;margin-left:12.7mm}.bn .li .n{position:absolute;left:-6.35mm}
 .bn .lb{display:inline-block}.bn .stamp{margin:1mm 0 1mm 0}.bn b{font-weight:700}
-.cb{position:relative}.cb input{width:100%;box-sizing:border-box;padding-right:34px}.cb button{position:absolute;right:1px;top:1px;bottom:1px;width:32px;border:0;background:transparent;font-size:14px;cursor:pointer;color:#444}.cbl{position:absolute;left:0;right:0;top:100%;z-index:50;background:#fff;border:1px solid #bbb;border-radius:6px;max-height:260px;overflow:auto;box-shadow:0 6px 16px rgba(0,0,0,.18);margin-top:2px}.cbl div{padding:8px 10px;cursor:pointer;font-size:14px;border-bottom:1px solid #f0f0f0}.cbl div.hl,.cbl div:hover{background:#e3f4ea}.cbl .no{color:#888;cursor:default}</style></head><body>
+.cb{position:relative}.cb input{width:100%;box-sizing:border-box;padding-right:34px}.cb button{position:absolute;right:1px;top:1px;bottom:1px;width:32px;border:0;background:transparent;font-size:14px;cursor:pointer;color:#444}.cbl{position:absolute;left:0;right:0;top:100%;z-index:50;background:#fff;border:1px solid #bbb;border-radius:6px;max-height:260px;overflow:auto;box-shadow:0 6px 16px rgba(0,0,0,.18);margin-top:2px}.cbl div{padding:8px 10px;cursor:pointer;font-size:14px;border-bottom:1px solid #f0f0f0}.cbl div.hl,.cbl div:hover{background:#e3f4ea}.cbl .no{color:#888;cursor:default}.body.jn{top:23mm;left:25.4mm;right:25.4mm;font:10pt/1.73 'Nirmala UI',BNK,'Noto Sans Bengali',sans-serif;text-align:left}.body.jn b{font-weight:700}</style></head><body>
 <div id="pwgate" style="position:fixed;inset:0;background:#fff;z-index:9999;display:flex;align-items:center;justify-content:center">
 <div style="width:280px;text-align:center;font-family:Segoe UI,Arial,sans-serif">
 <div style="font-size:30px;margin-bottom:6px">🔒</div>
@@ -95,13 +95,13 @@ h3{text-align:center;text-decoration:underline;margin:0 0 12mm;font-size:11pt}
 <h2 style="display:flex;align-items:center">WeGro HR &middot; Field<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwMGFmNTAiLz48cGF0aCBkPSJNMTggMTBoMjBsMTAgMTB2MzRhMiAyIDAgMCAxLTIgMkgxOGEyIDIgMCAwIDEtMi0yVjEyYTIgMiAwIDAgMSAyLTJ6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTM4IDEwdjEwaDEweiIgZmlsbD0iI2JmZThjZiIvPjxyZWN0IHg9IjIyIiB5PSIyNiIgd2lkdGg9IjE4IiBoZWlnaHQ9IjMiIHJ4PSIxLjUiIGZpbGw9IiMwMGFmNTAiLz48cmVjdCB4PSIyMiIgeT0iMzMiIHdpZHRoPSIxNCIgaGVpZ2h0PSIzIiByeD0iMS41IiBmaWxsPSIjMDBhZjUwIiBvcGFjaXR5PSIuNTUiLz48Y2lyY2xlIGN4PSI0MyIgY3k9IjQ2IiByPSI5IiBmaWxsPSIjZjQ4MjFlIi8+PHBhdGggZD0iTTM4LjUgNDZsMyAzIDYtNiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIuNiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+" width="24" height="24" style="margin-left:8px"></h2>
 <label for="ltype">Letter Type</label>
 <select id="ltype">
-<optgroup label="Field Employee"><option value="salary">Salary Certificate</option><option value="apnbn">Appointment Letter (Bangla) - Field Officer / Sr. Field Officer</option></optgroup>
+<optgroup label="Field Employee"><option value="salary">Salary Certificate</option><option value="apnbn">Appointment Letter (Bangla) - Field Officer / Sr. Field Officer</option><option value="joinbn">Joining Letter (Bangla)</option></optgroup>
 
 </select>
 <label for="eid">Employee ID</label>
 <select id="eid" style="display:none"><option value="">-- Employee select korun --</option></select>
 <div id="cb" class="cb"><input type="text" id="eidc" placeholder="-- Employee select korun ba ID likhun --" autocomplete="off"><button type="button" id="cbbtn" tabindex="-1">&#9662;</button><div id="cbl" class="cbl" hidden></div></div><input type="hidden" id="eidt"><datalist id="idl"></datalist>
-<div id="bnedit" hidden><label for="bnName">Name (Bangla)</label><input type="text" id="bnName" autocomplete="off"><label for="bnAddr">Thikana (Bangla)</label><textarea id="bnAddr" rows="3"></textarea><label for="bnWork">Kormosthol (Bangla)</label><input type="text" id="bnWork" autocomplete="off"><div class="note">Auto Bangla anubad vul hole ekhane thik korun. Letter-e sathe sathe bodle jabe ar ei browser-e save thakbe.</div></div>
+<div id="bnedit" hidden><label for="bnDes">Designation (Bangla)</label><input type="text" id="bnDes" autocomplete="off" style="display:none"><label for="bnName">Name (Bangla)</label><input type="text" id="bnName" autocomplete="off"><label for="bnAddr">Thikana (Bangla)</label><textarea id="bnAddr" rows="3"></textarea><label for="bnWork">Kormosthol (Bangla)</label><input type="text" id="bnWork" autocomplete="off"><div class="note">Auto Bangla anubad vul hole ekhane thik korun. Letter-e sathe sathe bodle jabe ar ei browser-e save thakbe.</div></div>
 
 <div id="msg" class="note"></div><button id="sync" style="width:100%;background:#f5c518;color:#222;font-weight:700">Sync Data</button><div id="st" class="note" style="margin-top:4px"></div>
 <button id="spdf" disabled>💾 Save as PDF</button> <button id="pbtn" class="alt" disabled>🖨 Print</button>
@@ -249,7 +249,7 @@ const TPLAP2=`10.\tYou will be retired from the services at the age of 60 (sixty
 18.\tAny other issue conditions not specifically mentioned in this contract shall be governed by the Company's rules and regulations which are currently in force or changed by the Company from time to time.
 
 This employment is based on the information and documents you have provided. If at any time any information and documents are found false or any vital information not disclosed, the company reserves the right to terminate your employment without any notice or salary in lieu of.`;
-const TYPES={apnbn:{cat:'field',who:'active',label:'Appointment Letter (Bangla)',file:'Appointment_Letter_BN',bn:true},salary:{cat:'field',who:'active',label:'Salary Certificate',title:'Salary Certificate',file:'Salary_Certificate',pre:'for',jt:'Manager, HR &amp; Admin',mail:true,tk:a=>a?'tpl':'tplr'},exp:{cat:'hq',label:'Experience Letter',title:'Experience Certificate',file:'Experience_Letter',pre:'For',jt:'Manager, Human Resources',mail:true,who:'resigned',exp:true,tk:()=>'tple'},
+const TYPES={joinbn:{cat:'field',who:'active',label:'Joining Letter (Bangla)',file:'Joining_Letter_BN',jn:true},apnbn:{cat:'field',who:'active',label:'Appointment Letter (Bangla)',file:'Appointment_Letter_BN',bn:true},salary:{cat:'field',who:'active',label:'Salary Certificate',title:'Salary Certificate',file:'Salary_Certificate',pre:'for',jt:'Manager, HR &amp; Admin',mail:true,tk:a=>a?'tpl':'tplr'},exp:{cat:'hq',label:'Experience Letter',title:'Experience Certificate',file:'Experience_Letter',pre:'For',jt:'Manager, Human Resources',mail:true,who:'resigned',exp:true,tk:()=>'tple'},
 rel:{cat:'hq',label:'Release Letter',file:'Release_Letter',pre:'For',jt:'Manager, Human Resources',mail:true,who:'resigned',rel:true,tk:()=>'tplx'},
 rac:{cat:'hq',label:'Resignation Acceptance',file:'Resignation_Acceptance',jt:'Manager, Human Resources',mail:false,co:true,who:'resigned',rac:true,tk:()=>'tplz'},
 noc:{cat:'hq',label:'WeGro NOC FORM',file:'WeGro_NOC_FORM',who:'resigned',noc:true},
@@ -351,6 +351,7 @@ const miss=new Set();const gk=Object.keys(emp).find(h=>/^gender$/i.test(h)),g=gk
 const LT=TYPES[$('ltype').value]||TYPES.salary;const gv2=re=>{const k=Object.keys(emp).find(h=>re.test(h));return k?String(emp[k]).trim():''};
 $('page').classList.remove('brk');if($('page2'))$('page2').style.display='none';
 if(LT.bn){renderBN(LT,act);return}
+if(LT.jn){renderJN(LT,act);return}
 const hasResigned=!!(gv2(/resignation notification date/i)||gv2(/last working day/i));
 const blocked=LT.ppa?!/probation/i.test(gv2(/employement status/i)):LT.noc?!hasResigned:(LT.who=='resigned'&&act)||(LT.who=='active'&&!act);
 $('pbtn').disabled=$('spdf').disabled=blocked;$('out').className='body'+(LT.exp?' exp':'')+(LT.rel?' rel':'')+(LT.rac?' ra':'')+(LT.noc?' noc':'')+(LT.ce?' ce':'')+(LT.ppa?' ppa':'');
@@ -504,7 +505,7 @@ return''}
 function bnOv(k,v){if(!emp)return;const id=String(emp[KEY]).trim();BN_OV[id]=BN_OV[id]||{};v=v.trim();if(v)BN_OV[id][k]=v;else delete BN_OV[id][k];if(!Object.keys(BN_OV[id]).length)delete BN_OV[id];save(BN_OVK,JSON.stringify(BN_OV));draw()}
 function renderBN(LT,act){
 const e=emp,id=String(e[KEY]).trim(),pg=$('page'),pg2=$('page2'),out=$('out'),out2=$('out2');
-$('bnedit').hidden=false;
+bnShow('apn');
 const des=bnDesig(e),blocked=!act||!des;
 $('pbtn').disabled=$('spdf').disabled=blocked;
 pg.classList.remove('brk');pg2.style.display='none';out.className='body bn';out2.className='body bn';out2.innerHTML='';
@@ -550,6 +551,25 @@ const set=(el,v)=>{if(document.activeElement!==el)el.value=v};set($('bnName'),nm
 const w=[];if(pend.length)w.push('⏳ Bangla anubad hocche: '+pend.join(', '));if(fail.length)w.push('⚠ Auto Bangla anubad hoy ni ('+fail.join(', ')+'). Nicher Bangla box-e thik korun.');if(warn.length)w.push('Data-te nai ba khali: '+warn.join(', '));
 $('warn').textContent=w.join(' | ')}
 $('bnName').oninput=()=>bnOv('name',$('bnName').value);$('bnAddr').oninput=()=>bnOv('addr',$('bnAddr').value);$('bnWork').oninput=()=>bnOv('work',$('bnWork').value);
+
+/* ===== Joining Letter (Bangla) ===== */
+const JNB=[{"h": "তারিখ: {{TODAY}}", "s": "margin-top:0pt;margin-bottom:8pt;line-height:1.727"}, {"h": "বরাবর<br>ম্যানেজার – হিউম্যান রিসোর্সেস<br>উইগ্রো টেকনোলজিস লিমিটেড", "s": "margin-top:5pt;margin-bottom:5pt;line-height:1.727"}, {"h": "বিষয়: যোগদান পত্র", "s": "margin-top:0pt;margin-bottom:8pt;line-height:1.727"}, {"h": "জনাব,", "s": "margin-top:0pt;margin-bottom:8pt;line-height:1.727"}, {"h": "সবিনয় নিবেদন এই যে, উইগ্রো টেকনোলজিস লিমিটেড-এর পক্ষ থেকে প্রাপ্ত চাকরির প্রস্তাবপত্রে উল্লিখিত শর্তাবলী অনুযায়ী আজ {{TODAY}} তারিখে আমি <b>{{DESIG}} </b>পদে আনুষ্ঠানিকভাবে যোগদান করলাম—এ মর্মে আপনাকে অবগত করছি।", "s": "margin-top:5pt;margin-bottom:5pt;line-height:1.727;text-align:justify"}, {"h": "&nbsp;", "s": "margin-top:5pt;margin-bottom:5pt;line-height:1.727;text-align:justify"}, {"h": "উইগ্রো টেকনোলজিস লিমিটেড- এর মতো একটি সম্মানিত প্রতিষ্ঠানের সঙ্গে যুক্ত হতে পেরে আমি অত্যন্ত আনন্দিত।", "s": "margin-top:5pt;margin-bottom:5pt;line-height:1.727;text-align:justify"}, {"h": "আমি আমার দায়িত্ব সততা, নিষ্ঠা ও পেশাদারিত্বের সঙ্গে পালন করার মাধ্যমে প্রতিষ্ঠানের সার্বিক উন্নয়নে অবদান রাখার সর্বোচ্চ চেষ্টা করবো এবং একই সঙ্গে আমার পেশাগত দক্ষতা উন্নয়নে সচেষ্ট থাকবো।", "s": "margin-top:5pt;margin-bottom:5pt;line-height:1.727;text-align:justify"}, {"h": "আমাকে এই প্রতিষ্ঠানের একজন সদস্য হিসেবে সুযোগ দেওয়ার জন্য আপনাকে আন্তরিক ধন্যবাদ ও কৃতজ্ঞতা জানাচ্ছি।", "s": "margin-top:0pt;margin-bottom:8pt;line-height:1.727;text-align:justify"}, {"h": "&nbsp;", "s": "margin-top:0pt;margin-bottom:8pt;line-height:1.727"}, {"h": "বিনীত নিবেদক,", "s": "margin-top:0pt;margin-bottom:8pt;line-height:1.727"}, {"h": "&nbsp;", "s": "margin-top:0pt;margin-bottom:8pt;line-height:1.727"}, {"h": "নাম: .........................", "s": "margin-top:0pt;margin-bottom:8pt;line-height:1.727"}, {"h": "<br>স্বাক্ষর: .....................", "s": "margin-top:0pt;margin-bottom:8pt;line-height:1.727"}];
+const BN_WORDS={field:'ফিল্ড',officer:'অফিসার',senior:'সিনিয়র',junior:'জুনিয়র',area:'এরিয়া',regional:'রিজিওনাল',zonal:'জোনাল',territory:'টেরিটরি',cluster:'ক্লাস্টার',manager:'ম্যানেজার',assistant:'অ্যাসিস্ট্যান্ট',asst:'অ্যাসিস্ট্যান্ট',deputy:'ডেপুটি',executive:'এক্সিকিউটিভ',head:'হেড',sales:'সেলস',accounts:'অ্যাকাউন্টস',account:'অ্যাকাউন্ট',accountant:'অ্যাকাউন্ট্যান্ট',admin:'অ্যাডমিন',hr:'এইচআর',human:'হিউম্যান',resources:'রিসোর্সেস',operations:'অপারেশনস',operation:'অপারেশন',coordinator:'কোঅর্ডিনেটর',analyst:'অ্যানালিস্ট',specialist:'স্পেশালিস্ট',director:'ডিরেক্টর',trainee:'ট্রেইনি',intern:'ইন্টার্ন',supervisor:'সুপারভাইজার',lead:'লিড',engineer:'ইঞ্জিনিয়ার',developer:'ডেভেলপার',designer:'ডিজাইনার',driver:'ড্রাইভার',peon:'পিয়ন',office:'অফিস',marketing:'মার্কেটিং',finance:'ফাইন্যান্স',it:'আইটি',support:'সাপোর্ট',customer:'কাস্টমার',service:'সার্ভিস',technical:'টেকনিক্যাল',business:'বিজনেস',development:'ডেভেলপমেন্ট',procurement:'প্রকিউরমেন্ট',logistics:'লজিস্টিকস',warehouse:'ওয়্যারহাউস',store:'স্টোর',general:'জেনারেল',chief:'চিফ',vice:'ভাইস',president:'প্রেসিডেন্ট',associate:'অ্যাসোসিয়েট',team:'টিম',agriculture:'অ্যাগ্রিকালচার',agronomist:'এগ্রোনমিস্ট',mis:'এমআইএস',qa:'কিউএ',research:'রিসার্চ',product:'প্রোডাক্ট',project:'প্রজেক্ট',data:'ডেটা',and:'ও',of:'অব',the:'দ্য'};
+const bnDesAny=t=>String(t||'').replace(/[A-Za-z]+/g,w=>BN_WORDS[w.toLowerCase()]||w).replace(/\s*&\s*/g,' ও ').replace(/\s+/g,' ').trim();
+function bnShow(w){const apn=w=='apn';[['bnName',apn],['bnAddr',apn],['bnWork',apn],['bnDes',!apn]].forEach(([i,s])=>{const el=$(i);if(el)el.style.display=s?'':'none';const l=document.querySelector('label[for="'+i+'"]');if(l)l.style.display=s?'':'none'});$('bnedit').hidden=false}
+function renderJN(LT,act){
+const e=emp,id=String(e[KEY]).trim(),pg=$('page'),pg2=$('page2'),out=$('out');
+pg.classList.remove('brk');pg2.style.display='none';$('out2').innerHTML='';out.className='body jn';out.style.fontSize='';
+$('pbtn').disabled=$('spdf').disabled=!act;
+if(!act){out.innerHTML='<div class="empty">'+LT.label+' shudhu Active employee-er jonno.<br>Ei employee Resigned.</div>';$('msg').textContent='Ei letter ei employee-r jonno pawa jabe na.';$('bnedit').hidden=true;return}
+bnShow('jn');
+const ov=BN_OV[id]||{},dE=String(e['Designation']||'').trim(),auto=bnDesAny(dE),des=ov.des||auto||dE;
+const P={TODAY:bnFmt(new Date(),'txt'),DESIG:esc(des)||'………………'};
+out.innerHTML=JNB.map(b=>'<div'+(b.s?' style="'+b.s+'"':'')+'>'+b.h.replace(/\{\{(\w+)\}\}/g,(m,k)=>P[k]!=null?P[k]:m)+'</div>').join('');
+const set=(el,v)=>{if(document.activeElement!==el)el.value=v};set($('bnDes'),des);
+const w=[];if(!dE)w.push('Data-te nai ba khali: Designation');else if(!ov.des&&/[A-Za-z]/.test(auto))w.push('⚠ Designation-er Bangla anubad paoa jayni. Nicher Bangla box-e thik korun.');
+$('warn').textContent=w.join(' | ')}
+$('bnDes').oninput=()=>bnOv('des',$('bnDes').value);
 
 $('eid').onchange=$('eid').oninput=()=>{$('eidt').value='';draw()};
 (function(){
