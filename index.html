@@ -538,19 +538,15 @@ h=h.replace(/\{\{TADA\}\}/g,tada).replace(/\{\{MOB\}\}/g,mob)}
 h=sub(h);
 if(b.k=='li'){n++;items.push('<div class="li"'+(b.s?' style="'+b.s+'"':'')+'><span class="n">'+bnD(n)+'.</span>'+h+'</div>')}
 else items.push('<div'+(b.s?' style="'+b.s+'"':'')+'>'+h+'</div>')}
-const MM=96/25.4,lim=(297-12.7-23)*MM;let fs=10,one=false;
-out.innerHTML=items.join('');pg2.style.display='none';
-const fits=()=>{const k=out.lastElementChild;return k.offsetTop+k.offsetHeight<=lim};
-for(let f=10;f>=6.5&&!one;f=Math.round((f-.25)*100)/100){out.style.fontSize=f+'pt';out.style.setProperty('--bl',1.22);if(!fits())continue;
-for(let bl=1.575;bl>=1.22;bl=Math.round((bl-.025)*1000)/1000){out.style.setProperty('--bl',bl);if(fits()){one=true;fs=f;break}}}
-if(!one){out.style.setProperty('--bl',1.575);out2.style.setProperty('--bl',1.575);pg2.style.display='block';
+const MM=96/25.4,lim=(297-12.7-23)*MM;let fs=10;
+out.style.setProperty('--bl',1.575);out2.style.setProperty('--bl',1.575);pg2.style.display='block';
 for(let t=0;t<9;t++){
 out.style.fontSize=out2.style.fontSize=fs+'pt';out.innerHTML=items.join('');out2.innerHTML='';
 const kids=[...out.children];let cut=-1;
 for(let i=0;i<kids.length;i++){if(kids[i].offsetTop+kids[i].offsetHeight>lim){cut=i;break}}
 if(cut<0){pg2.style.display='none';break}
 if(cut==0)cut=1;kids.slice(cut).forEach(k=>out2.appendChild(k));
-if(out2.offsetHeight<=lim)break;fs=Math.round((fs-.25)*100)/100}}
+if(out2.offsetHeight<=lim)break;fs=Math.round((fs-.25)*100)/100}
 if(pg2.style.display!='none')pg.classList.add('brk');
 const set=(el,v)=>{if(document.activeElement!==el)el.value=v};set($('bnName'),nm);set($('bnAddr'),ad);set($('bnWork'),wk);
 const w=[];if(pend.length)w.push('⏳ Bangla anubad hocche: '+pend.join(', '));if(fail.length)w.push('⚠ Auto Bangla anubad hoy ni ('+fail.join(', ')+'). Nicher Bangla box-e thik korun.');if(warn.length)w.push('Data-te nai ba khali: '+warn.join(', '));
@@ -605,16 +601,12 @@ for(const b of OFB){
 if(b.k=='sig'){items.push('<div style="position:relative;height:calc(9pt*var(--lh))">'+($('sg').checked?'<img src="'+IMG.sig+'" style="position:absolute;left:0;top:.8mm;width:24.5mm;height:6.8mm">':'')+'</div>');continue}
 if(b.k=='table'){items.push('<table><colgroup><col style="width:47.5mm"><col style="width:4.8mm"><col></colgroup>'+b.rows.filter(r=>!(r.o=='TADA'&&!tada)&&!(r.o=='MOB'&&!mob)).map(r=>'<tr><td>'+r.l+'</td><td>'+r.c+'</td><td>'+sub(r.v)+'</td></tr>').join('')+'</table>');continue}
 items.push('<div'+(b.s?' style="'+b.s+'"':'')+'>'+sub(b.h)+'</div>')}
-const MM=96/25.4,lim=(297-20.32-7.62)*MM;let fs=9,one=false;
-out.style.fontSize=out2.style.fontSize='9pt';pg2.style.display='none';
-for(let lh=1.4;lh>=1.1;lh=Math.round((lh-.05)*100)/100){out.style.setProperty('--lh',lh);out2.style.setProperty('--lh',lh);out.innerHTML=items.join('');const k=out.lastElementChild;if(k.offsetTop+k.offsetHeight<=lim){one=true;break}}
-if(one){}else{pg2.style.display='block';
-for(let t=0;t<9;t++){out.style.fontSize=out2.style.fontSize=fs+'pt';out.innerHTML=items.join('');out2.innerHTML='';
-const kids=[...out.children];let cut=-1;for(let i=0;i<kids.length;i++){if(kids[i].offsetTop+kids[i].offsetHeight>lim){cut=i;break}}
-if(cut<0){pg2.style.display='none';break}
-if(cut==0)cut=1;kids.slice(cut).forEach(k=>out2.appendChild(k));
-if(out2.offsetHeight<=lim)break;fs=Math.round((fs-.25)*100)/100}}
-if(pg2.style.display!='none')pg.classList.add('brk');
+const MM=96/25.4,lim=(297-20.32-7.62)*MM;pg2.style.display='none';out2.innerHTML='';
+const fits=()=>{const k=out.lastElementChild;return k.offsetTop+k.offsetHeight<=lim};
+let ok=false;
+for(let f=9;f>=6.5&&!ok;f=Math.round((f-.25)*100)/100){out.style.fontSize=f+'pt';
+for(let lh=1.4;lh>=1.15;lh=Math.round((lh-.05)*100)/100){out.style.setProperty('--lh',lh);out.innerHTML=items.join('');if(fits()){ok=true;break}}}
+if(!ok){out.style.fontSize='6.5pt';out.style.setProperty('--lh',1.05);out.innerHTML=items.join('')}
 const set=(el,v)=>{if(document.activeElement!==el)el.value=v};set($('bnName'),nm);set($('bnAddr'),ad);set($('bnDes'),dBn);
 const w=[],pend=[],fail=[];
 const chk=(l,o,a,en,k)=>{if(!en||o||a)return;const key=k+'|'+en;if(BN_PEND[key])pend.push(l);else if(BN_FAIL[key])fail.push(l)};
