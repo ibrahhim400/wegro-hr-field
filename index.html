@@ -660,9 +660,10 @@ if(b.k=='stamp'){items.push('<div style="position:relative;height:calc(3*1.15*9p
 const h=sub2(b.h);
 if(b.k=='li'){n++;items.push('<div class="li"'+(b.s?' style="'+b.s+'"':'')+'><span class="n">'+n+'.</span>'+h+'</div>')}
 else items.push('<div'+(b.s?' style="'+b.s+'"':'')+'>'+h+'</div>')}
-const MM=96/25.4,lim=(297-31.75-25.4)*MM;let fs=9;pg2.style.display='block';
+const MM=96/25.4,lim=(279.4-31.75-25.4)*MM;let fs=9;pg2.style.display='block';
 for(let t=0;t<9;t++){out.style.fontSize=out2.style.fontSize=fs+'pt';out.innerHTML=items.join('');out2.innerHTML='';
 const kids=[...out.children];let cut=-1;for(let i=0;i<kids.length;i++){if(kids[i].offsetTop+kids[i].offsetHeight>lim){cut=i;break}}
+const i10=kids.findIndex(k=>k.classList.contains('li')&&k.querySelector('.n').textContent=='10.');if(i10>0&&(cut<0||cut>i10))cut=i10;
 if(cut<0){pg2.style.display='none';break}
 if(cut==0)cut=1;kids.slice(cut).forEach(k=>out2.appendChild(k));
 while(out2.firstElementChild&&!out2.firstElementChild.querySelector('img')&&/^[\s\u00a0\u200b]*$/.test(out2.firstElementChild.textContent))out2.removeChild(out2.firstElementChild);
