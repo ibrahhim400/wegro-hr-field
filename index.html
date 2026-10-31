@@ -722,7 +722,7 @@ add(t+'trailer\n<</Size '+total+'/Root 1 0 R>>\nstartxref\n'+x+'\n%%EOF');
 return new Blob(parts,{type:'application/pdf'})}
 
 $('spdf').onclick=async()=>{const b=$('spdf');b.disabled=true;b.textContent='⏳ PDF banano hocche...';
-try{const LTnow=TYPES[$('ltype').value];const curKeyNow=KEY;const elsToShoot=[$('page')];if(LTnow.apn||LTnow.bn||LTnow.of||LTnow.ea)elsToShoot.push($('page2'));
+try{const LTnow=TYPES[$('ltype').value];const curKeyNow=KEY;const elsToShoot=[$('page')];if($('page2').style.display!=='none'&&getComputedStyle($('page2')).display!=='none')elsToShoot.push($('page2'));
 const pages=[];
 for(const el of elsToShoot){const cv=await html2canvas(el,{scale:3,backgroundColor:'#fff',logging:false,scrollX:-scrollX,scrollY:-scrollY});
 const jb=await new Promise(r=>cv.toBlob(r,'image/jpeg',.92));
