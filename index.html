@@ -703,7 +703,8 @@ const dots='………………';
 const nmE=String(e['Name']||'').trim(),nm=hasBn(nmE)?enGet(nmE):nmE,des=String(e['Designation']||'').trim();
 const jd=dObj(e['Date of Joining']),phone=eaPhone(e['Personal Phone']),email=String(e['Email']||'').trim();
 const gn=parseFloat(String(e['Salary 2026']||'').replace(/[^\d.]/g,''))||0,now=new Date(),rep=new Date(now.getTime()+2*86400000);
-const comp=gn>0?'BDT '+Math.round(gn).toLocaleString('en-IN')+' ('+enWords(gn)+')':dots;
+const tada=parseFloat(String(e['TA/DA']||'').replace(/[^\d.]/g,''))||0;
+const comp=gn>0?'BDT '+Math.round(gn).toLocaleString('en-IN')+' ('+enWords(gn)+' Taka)'+(tada>0?', TA/DA: '+Math.round(tada).toLocaleString('en-IN'):''):dots;
 const P={TODAY:enDashed(now),NAME:esc(nm)||dots,PHONE:phone||dots,EMAIL:esc(email),DESIG:esc(des),JOIN_TXT:jd?enDMY(jd,true):dots,JOIN_D:jd?enDashed(jd):dots,COMP:comp,REPLY:enDMY(rep,true)};
 const sub=h=>h.replace(/\{\{(\w+)\}\}/g,(m,k)=>P[k]!=null?P[k]:m);
 const bl='<div>&nbsp;</div>',J='text-align:justify';
@@ -731,7 +732,7 @@ kv('Joining Date','{{JOIN_D}}'),kv('Reporting Time','10:00 AM'),kv('Office Addre
 const MM=96/25.4,lim=(297-27-8)*MM;
 for(let f=10.5;f>=8;f=Math.round((f-.25)*100)/100){out.style.fontSize=f+'pt';out.innerHTML=items.join('');const k=out.lastElementChild;if(k.offsetTop+k.offsetHeight<=lim)break}
 const w=[],miss=[['Name',nmE],['Personal Phone',phone],['Joining Date',jd],['Update Salary 2026',gn>0]].filter(x=>!x[1]).map(x=>x[0]);
-if(!email)w.push('Email khali: letter-e Email line bad gelo');if(miss.length)w.push('Data-te nai ba khali: '+miss.join(', '));
+if(!email)w.push('Email khali: letter-e Email line bad gelo');if(!(tada>0))w.push('TA/DA khali: Monthly Compensation-e TA/DA bad gelo');if(miss.length)w.push('Data-te nai ba khali: '+miss.join(', '));
 if(hasBn(nmE)&&!nm)w.push(EN_PEND[nmE]?'⏳ English anubad hocche...':'⚠ Name-er English anubad hoy ni (sheet-e English-e likhun)');
 $('warn').textContent=w.join(' | ')}
 
