@@ -268,7 +268,7 @@ const SHEET_EXPORT='https://docs.google.com/spreadsheets/d/1B_Dyh8NdpALA1er9qcsm
 const SHEET='https://docs.google.com/spreadsheets/d/1B_Dyh8NdpALA1er9qcsmn_pp2aG-c6tLk2WikIdn_3s/gviz/tq?tqx=out:csv&gid=1169921246';
 const SHEETJ=SHEET.replace('out:csv','out:json&headers=1');let lastOK=0,busy=false;
 const WANT=['Staff Id No','Name','Date of Joining','Designation','Department','Salary 2026','Basic','House Rent','Conveyance Allowance','Medical Allowance','Gender','Employee Status','Employement Status','Last Working Day','Permanent Address','Personal Phone','Covered Area','TA/DA','Mobile Bill','Sub-Department','Email'];
-const ALIAS={'Staff Id No':'New Staff Code','Name':'Employee Name','Date of Joining':'Joining Date','Salary 2026':'Update Salary 2026','Employee Status':'Emplyee Status','Employement Status':['Employment Status','@BC'],'Last Working Day':'Last Wroking Day','Covered Area':['Updated Covered Area'],'Sub-Department':['Sub Department','SubDepartment'],'Email':['Personal Email','Email Address','Personal Mail','Email','FO Email','Official Mail Address']};
+const ALIAS={'Staff Id No':'New Staff Code','Name':'Employee Name','Date of Joining':'Joining Date','Salary 2026':'Update Salary 2026','Employee Status':'Emplyee Status','Employement Status':['Employment Status','@BC'],'Last Working Day':'Last Wroking Day','Sub-Department':['Sub Department','SubDepartment'],'Email':['Personal Email','Email Address','Personal Mail','Email','FO Email','Official Mail Address']};
 const ACT=r=>/^active$/i.test(String(r['Employee Status']||'').trim());
 let _ids='';
 function fillIds(){const el=$('eid'),cur=el.value,sig=DATA.map(r=>r[KEY]+'|'+r['Name']+'|'+ACT(r)).join('~');if(sig===_ids&&el.options.length>1)return;_ids=sig;
@@ -701,11 +701,12 @@ $('pbtn').disabled=$('spdf').disabled=blocked;
 if(blocked){out.innerHTML='<div class="empty">'+(!act?LT.label+' shudhu Active employee-er jonno.<br>Ei employee Resigned.':'Ei English Offer Letter Field Officer, Senior Field Officer ar Trainee Field Officer chara onno shob designation-er jonno.<br>Ei employee-r designation: '+esc(e['Designation']||'(khali)')+'<br>(Ora Bangla Offer Letter paben.)')+'</div>';$('msg').textContent='Ei letter ei employee-r jonno pawa jabe na.';return}
 const dots='………………';
 const nmE=String(e['Name']||'').trim(),nm=hasBn(nmE)?enGet(nmE):nmE,des=String(e['Designation']||'').trim();
+const wkE=String(e['Covered Area']||'').trim(),wk=hasBn(wkE)?enGet(wkE):wkE;
 const jd=dObj(e['Date of Joining']),phone=eaPhone(e['Personal Phone']),email=String(e['Email']||'').trim();
 const gn=parseFloat(String(e['Salary 2026']||'').replace(/[^\d.]/g,''))||0,now=new Date(),rep=new Date(now.getTime()+2*86400000);
 const tada=parseFloat(String(e['TA/DA']||'').replace(/[^\d.]/g,''))||0;
 const comp=gn>0?'BDT '+Math.round(gn).toLocaleString('en-IN')+' ('+enWords(gn)+' Taka)'+(tada>0?', TA/DA: '+Math.round(tada).toLocaleString('en-IN'):''):dots;
-const P={TODAY:enDashed(now),NAME:esc(nm)||dots,PHONE:phone||dots,EMAIL:esc(email),DESIG:esc(des),JOIN_TXT:jd?enDMY(jd,true):dots,JOIN_D:jd?enDashed(jd):dots,COMP:comp,REPLY:enDMY(rep,true)};
+const P={TODAY:enDashed(now),LOC:esc(wk)||'As per business requirment',NAME:esc(nm)||dots,PHONE:phone||dots,EMAIL:esc(email),DESIG:esc(des),JOIN_TXT:jd?enDMY(jd,true):dots,JOIN_D:jd?enDashed(jd):dots,COMP:comp,REPLY:enDMY(rep,true)};
 const sub=h=>h.replace(/\{\{(\w+)\}\}/g,(m,k)=>P[k]!=null?P[k]:m);
 const bl='<div>&nbsp;</div>',J='text-align:justify';
 const kv=(k,v)=>'<div class="kv"><span class="bu">&#9642;</span><span class="k">'+k+'</span><span class="v">: '+v+'</span></div>';
@@ -719,7 +720,7 @@ const items=[
 '<div>Congratulations!</div>',
 '<div style="'+J+'">We are pleased to offer you the position of <b>{{DESIG}}</b> at WeGro Technologies Limited. After our discussions and evaluation, we believe your experience and skills would be a valuable addition to our team. Your anticipated joining date is <b>{{JOIN_TXT}}.</b></div>',bl,
 '<div><b>Employment Details</b></div>',
-kv('Job Title','{{DESIG}}'),kv('Job Location','As per business requirment'),kv('Probation Period','6 Months'),kv('Monthly Compensation','{{COMP}}'),
+kv('Job Title','{{DESIG}}'),kv('Job Location','{{LOC}}'),kv('Probation Period','6 Months'),kv('Monthly Compensation','{{COMP}}'),
 kv('Festival Bonus','02 Yearly (Eligibility: After successful completion of the probation period)'),kv('Mobile Allowance','As per the company policy.'),
 kv('Joining Date','{{JOIN_D}}'),kv('Reporting Time','10:00 AM'),kv('Office Address','WeGro Technologies Limited, Block-A, House 42 (Lift-3), Road 1, Niketan, Gulshan, Dhaka.'),bl,
 '<div style="'+J+'">During the probation period, your performance and overall suitability for the role will be assessed. Upon successful completion of the probation period, your employment may be confirmed in accordance with the company’s policies.</div>',bl,
@@ -732,7 +733,7 @@ kv('Joining Date','{{JOIN_D}}'),kv('Reporting Time','10:00 AM'),kv('Office Addre
 const MM=96/25.4,lim=(297-27-8)*MM;
 for(let f=10.5;f>=8;f=Math.round((f-.25)*100)/100){out.style.fontSize=f+'pt';out.innerHTML=items.join('');const k=out.lastElementChild;if(k.offsetTop+k.offsetHeight<=lim)break}
 const w=[],miss=[['Name',nmE],['Personal Phone',phone],['Joining Date',jd],['Update Salary 2026',gn>0]].filter(x=>!x[1]).map(x=>x[0]);
-if(!email)w.push('Email khali: letter-e Email line bad gelo');if(!(tada>0))w.push('TA/DA khali: Monthly Compensation-e TA/DA bad gelo');if(miss.length)w.push('Data-te nai ba khali: '+miss.join(', '));
+if(!wkE)w.push('Covered Area khali: Job Location-e "As per business requirment" boshano hoyeche');else if(hasBn(wkE)&&!wk)w.push(EN_PEND[wkE]?'⏳ Job Location English anubad hocche...':'⚠ Job Location-er English anubad hoy ni (sheet-e English-e likhun)');if(!email)w.push('Email khali: letter-e Email line bad gelo');if(!(tada>0))w.push('TA/DA khali: Monthly Compensation-e TA/DA bad gelo');if(miss.length)w.push('Data-te nai ba khali: '+miss.join(', '));
 if(hasBn(nmE)&&!nm)w.push(EN_PEND[nmE]?'⏳ English anubad hocche...':'⚠ Name-er English anubad hoy ni (sheet-e English-e likhun)');
 $('warn').textContent=w.join(' | ')}
 
